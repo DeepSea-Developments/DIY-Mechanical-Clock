@@ -2,36 +2,36 @@
 #include <time.h>
 #include "SevenSegment.h"
 
-const char *ssid = "DeepSea Developments"; // Name of the Wifi Network
-const char *password = "******";           // Password of the Wifi Network
+const char *ssid = "Deepsea";       // Name of the Wifi Network
+const char *password = "Hexaverse"; // Password of the Wifi Network
 
 const char *ntpServer = "pool.ntp.org"; // URL of NTP Server
 const char *TimeZone = "<-05>5";        // America/Bogota Time Zone
 // const char *TimeZone = "PST8PDT,M3.2.0,M11.1.0"; // America/Los_Angeles Time ZOne
 
-#define SDA_PIN 2
-#define SCL_PIN 4
+#define SDA_PIN 21
+#define SCL_PIN 22
 
 // Hour digits
-SevenSegment HourTens = SevenSegment(0x40);     // Create an object of Hour Tens driver
-SevenSegment HourUnits = SevenSegment(0x40, 7); // Create an object of Hour Units driver
+SevenSegment HourTens = SevenSegment(0x40, 7);  // Create an object of Hour Tens driver
+SevenSegment HourUnits = SevenSegment(0x40, 0); // Create an object of Hour Units driver
 
 // Minute digits
-SevenSegment MinuteTens = SevenSegment(0x41);     // Create an object of Minute Tens driver
-SevenSegment MinuteUnits = SevenSegment(0x41, 7); // Create an object of Minute Units driver
+SevenSegment MinuteTens = SevenSegment(0x41, 7);  // Create an object of Minute Tens driver
+SevenSegment MinuteUnits = SevenSegment(0x41, 0); // Create an object of Minute Units driver
 
 // Segments On/Off servo pos                   1    2    3    4    5    6   7
-const uint16_t HourTensOnPos[SEGMENT_NUMS] = {375, 375, 390, 350, 375, 390, 340};
-const uint16_t HourTensOffPos[SEGMENT_NUMS] = {150, 500, 500, 500, 150, 150, 500};
+const uint16_t HourTensOnPos[SEGMENT_NUMS] = {368, 368, 368, 368, 368, 368, 368};
+const uint16_t HourTensOffPos[SEGMENT_NUMS] = {565, 172, 172, 172, 565, 565, 565};
 
-const uint16_t HourUnitsOnPos[SEGMENT_NUMS] = {375, 375, 390, 350, 368, 390, 340};
-const uint16_t HourUnitsOffPos[SEGMENT_NUMS] = {200, 500, 490, 480, 250, 250, 500};
+const uint16_t HourUnitsOnPos[SEGMENT_NUMS] = {368, 368, 368, 368, 368, 368, 368};
+const uint16_t HourUnitsOffPos[SEGMENT_NUMS] = {565, 172, 172, 172, 565, 565, 565};
 
-const uint16_t MinuteTensOnPos[SEGMENT_NUMS] = {375, 375, 390, 350, 375, 390, 340};
-const uint16_t MinuteTensOffPos[SEGMENT_NUMS] = {200, 500, 490, 480, 250, 250, 200};
+const uint16_t MinuteTensOnPos[SEGMENT_NUMS] = {368, 368, 368, 368, 368, 368, 368};
+const uint16_t MinuteTensOffPos[SEGMENT_NUMS] = {565, 172, 172, 172, 565, 565, 565};
 
-const uint16_t MinuteUnitsOnPos[SEGMENT_NUMS] = {375, 375, 390, 350, 368, 390, 340};
-const uint16_t MinuteUnitsOffPos[SEGMENT_NUMS] = {200, 500, 490, 480, 250, 250, 150};
+const uint16_t MinuteUnitsOnPos[SEGMENT_NUMS] = {368, 368, 368, 368, 368, 368, 368};
+const uint16_t MinuteUnitsOffPos[SEGMENT_NUMS] = {565, 172, 172, 172, 565, 565, 565};
 
 void setup()
 {
@@ -39,10 +39,10 @@ void setup()
   Serial.begin(115200);
 
   // Put all the servos ON , 88:88 and wait for ever .Only for Test/Calibration
-  CalibrateServos();
+  // CalibrateServos();
 
   // Start Clock application
-  //  InitClock();
+  InitClock();
 }
 
 void loop()
@@ -121,10 +121,40 @@ void InitClock(void)
 void CalibrateServos(void)
 {
   InitServos();
+  delay(5000);
 
   // Wait for ever , so the user can adjust the segment position
   while (1)
+  {
+    // for (size_t i = 0; i < 99; i++)
+    // {
+    //   // Convert Hour and minutes in Digits
+    //   int Hora = i;
+    //   int Mim = i;
+
+    //   int hourTens = Hora / 10;
+    //   int hourUnits = Hora % 10;
+    //   int minuteTens = Mim / 10;
+    //   int minuteUnits = Mim % 10;
+
+    //   // Refresh every servo digit according to the time
+    //   HourTens.setNum(hourTens);
+    //   HourUnits.setNum(hourUnits);
+    //   MinuteTens.setNum(minuteTens);
+    //   MinuteUnits.setNum(minuteUnits);
     delay(1000);
+  }
+
+  // MinuteUnits.setEmpty();
+  // MinuteTens.setEmpty();
+  // HourTens.setEmpty();
+  // HourUnits.setEmpty();
+  // delay(1000);
+  // MinuteUnits.setFull();
+  // MinuteTens.setFull();
+  // HourTens.setFull();
+  // HourUnits.setFull();
+  // delay(1000);
 }
 
 // Initialize time by starting NTP synchronization , wait till get a valid time and set Time Zone
