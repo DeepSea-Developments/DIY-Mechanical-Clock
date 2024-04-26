@@ -39,7 +39,7 @@ void SevenSegment::setState(const uint8_t num, bool state)
 
     if (num == SEGMENT_7)
     {
-        setSegmentSevenPos(state);
+        setSegmentSevenState(state);
     }
     else
     {
@@ -75,10 +75,10 @@ void SevenSegment::setNum(uint8_t num)
 // Move side segments to allow move mid segment(Seven)
 void SevenSegment::releaseSevenSegment()
 {
-    if (_displayState[SEGMENT_2] == true)
-        setSegmentPos(SEGMENT_2, _servoPosOn[1] - _servoTinyMove);
-    if (_displayState[SEGMENT_6] == true)
-        setSegmentPos(SEGMENT_6, _servoPosOn[1] + _servoTinyMove);
+    if (_displayState[SEGMENT_3] == true)
+        setSegmentPos(SEGMENT_3, _servoPosOn[1] + _servoTinyMove);
+    if (_displayState[SEGMENT_5] == true)
+        setSegmentPos(SEGMENT_5, _servoPosOn[1] - _servoTinyMove);
 }
 // Initialize and configure PCA9685 driver
 bool SevenSegment::init()
@@ -113,14 +113,18 @@ void SevenSegment::setSegmentPos(const uint8_t num, uint16_t pos)
     _servo_driver->setPWM(_seg0DriverPos + num, 0, pos);
 }
 // set segment #7 state , this include moving side segments .Only used at low level
-void SevenSegment::setSegmentSevenPos(bool state)
+void SevenSegment::setSegmentSevenState(bool state)
 {
     if (_displayState[SEGMENT_7] != state)
     {
         releaseSevenSegment();
-    }
-    delay(100);
-    setSegmentState(SEGMENT_7, state);
+        delay(100); // wait till server move
 
-    _displayState[SEGMENT_7] = state;
+        setSegmentState(SEGMENT_7, state);
+        _displayState[SEGMENT_7] = state;
+        delay(100); // wait till server move
+
+        setSegmentState(SEGMENT_3, _displayState[SEGMENT_3]);
+        setSegmentState(SEGMENT_5, _displayState[SEGMENT_5]);
+    }
 }

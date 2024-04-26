@@ -20,6 +20,18 @@ enum
     SEGMENT_7,
 };
 
+// enum
+// {
+//     SEGMENT_1,
+//     SEGMENT_2,
+//     SEGMENT_3,
+//     SEGMENT_4,
+//     SEGMENT_5,
+//     SEGMENT_6,
+//     SEGMENT_7,
+//     SEGMENT_8,
+// };
+
 class SevenSegment
 {
 public:
@@ -63,7 +75,7 @@ private:
     bool init();
     void setSegmentState(const uint8_t num, bool state);
     void setSegmentPos(const uint8_t num, uint16_t pos);
-    void setSegmentSevenPos(bool state);
+    void setSegmentSevenState(bool state);
 };
 
 #endif
